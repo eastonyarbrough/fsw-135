@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const PORT = 9000;
 
