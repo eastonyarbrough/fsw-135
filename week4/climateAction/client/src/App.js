@@ -5,22 +5,27 @@ import Home from './components/Home.js'
 import SignUp from './components/SignUp.js';
 import Login from './components/Login.js';
 
-export const LoggedContext = createContext();
-export const SetLoggedContext = createContext();
 export const TokenContext = createContext();
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [token, setToken] = useState("");
+  const [issues, setIssues] = useState([]);
 
-  const checkToken = () => {
-    if (token === undefined || token === "") {
-      setLoggedIn(false);
+  useEffect(() => {
+    if (token) {
+      fetch('/api/issues', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(res => setIssues(res))
+        .catch(err => console.log(err))
     }
-    else if (token !== undefined || token !== "") {
-      setLoggedIn(true);
-    }
-  }
+  }, [token])
 
   const userLogin = () => {
     fetch('/auth/login', {
@@ -35,35 +40,66 @@ function App() {
       })
     })
       .then(res => res.json())
-      .then(res => {
-        setToken(res.token);
-        checkToken();
-      })
+      .then(res => setToken(res.token))
       .catch(err => console.log(err))
   }
 
-  return (
-    <BrowserRouter>
-      <LoggedContext.Provider value={loggedIn}>
-        <SetLoggedContext.Provider value={setLoggedIn}>
-          <TokenContext.Provider value={token}>
-            <nav>
-              <Link to="/">Home</Link>
-              <Link to="/signup">Sign Up</Link>
-              <Link to="/login">Login</Link>
-            </nav>
-            <main>
-              <Routes>
-                <Route exact path="/" element={<Home/>}></Route>
-                <Route exact path="/signup" element={<SignUp/>}></Route>
-                <Route exact path="/login" element={<Login userLogin = {userLogin}/>}></Route>
-              </Routes>
-            </main>
-          </TokenContext.Provider>
-        </SetLoggedContext.Provider>
-      </LoggedContext.Provider>
-    </BrowserRouter>
-  );
+  const userSignup = () => {
+    fetch('/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userName: document.querySelector('#regUser').value,
+        password: document.querySelector('#regPass').value
+      })
+    })
+      .then(res => res.json())
+      .then(res => setToken(res.token))
+      .catch(err => console.log(err))
+  }
+
+  if (!token) {
+    return (
+      <BrowserRouter>
+            <TokenContext.Provider value={token}>
+              <nav>
+                <Link to="/">Home</Link>
+                <Link to="/signup">Sign Up</Link>
+                <Link to="/login">Login</Link>
+              </nav>
+              <main>
+                <Routes>
+                  <Route exact path="/" element={<Home issues = {issues}/>}></Route>
+                  <Route exact path="/signup" element={<SignUp userSignup = {userSignup}/>}></Route>
+                  <Route exact path="/login" element={<Login userLogin = {userLogin}/>}></Route>
+                </Routes>
+              </main>
+            </TokenContext.Provider>
+      </BrowserRouter>
+    );
+  }
+  else if (token) {
+    return(
+      <BrowserRouter>
+            <TokenContext.Provider value={token}>
+              <nav>
+                <Link to="/">Home</Link>
+                <Link to="/profile">Profile</Link>
+                <Link to="/" onClick={() => setToken("")}>Logout</Link>
+              </nav>
+              <main>
+                <Routes>
+                  <Route exact path="/" element={<Home issues = {issues}/>}></Route>
+                  <Route exact path="/profile"></Route>
+                </Routes>
+              </main>
+            </TokenContext.Provider>
+      </BrowserRouter>
+    )
+  }
 }
 
 export default App;
