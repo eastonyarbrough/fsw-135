@@ -4,12 +4,15 @@ import './App.css';
 import Home from './components/Home.js'
 import SignUp from './components/SignUp.js';
 import Login from './components/Login.js';
+import Profile from './components/Profile.js'
 
 export const TokenContext = createContext();
 
 function App() {
   const [token, setToken] = useState("");
   const [issues, setIssues] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [userIssues, setUserIssues] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -40,24 +43,54 @@ function App() {
       })
     })
       .then(res => res.json())
-      .then(res => setToken(res.token))
+      .then(res => {
+        setToken(res.token);
+        setCurrentUser(res.user);
+      })
       .catch(err => console.log(err))
   }
 
   const userSignup = () => {
+    let userBody = {}
+
+    if (document.querySelector('#profImg').value !== "") {
+      userBody = {
+        userName: document.querySelector('#regUser').value,
+        password: document.querySelector('#regPass').value,
+        profImg: document.querySelector('#profImg').value
+      }
+    }
+    else if (document.querySelector('#profImg').value === "") {
+      userBody = {
+        userName: document.querySelector('#regUser').value,
+        password: document.querySelector('#regPass').value
+      }
+    }
+
     fetch('/auth/signup', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        userName: document.querySelector('#regUser').value,
-        password: document.querySelector('#regPass').value
-      })
+      body: JSON.stringify(userBody)
     })
       .then(res => res.json())
       .then(res => setToken(res.token))
+      .catch(err => console.log(err))
+  }
+
+  const userPosts = (id) => {
+    fetch(`/api/issues/search/user?userID=${id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => setUserIssues(res))
       .catch(err => console.log(err))
   }
 
@@ -88,12 +121,19 @@ function App() {
               <nav>
                 <Link to="/">Home</Link>
                 <Link to="/profile">Profile</Link>
-                <Link to="/" onClick={() => setToken("")}>Logout</Link>
+                <Link to="/" onClick={() => {
+                  setToken("");
+                  setCurrentUser({});
+                }}>Logout</Link>
               </nav>
               <main>
                 <Routes>
                   <Route exact path="/" element={<Home issues = {issues}/>}></Route>
-                  <Route exact path="/profile"></Route>
+                  <Route exact path="/profile" element={<Profile
+                    currentUser = {currentUser}
+                    userPosts = {userPosts}
+                    userIssues = {userIssues}
+                  />}></Route>
                 </Routes>
               </main>
             </TokenContext.Provider>

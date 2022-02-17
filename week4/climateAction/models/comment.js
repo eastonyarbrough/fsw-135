@@ -6,8 +6,14 @@ const commentSchema = new Schema({
     type: String,
     required: true
   },
+  postID: {
+    type: Schema.Types.ObjectId,
+    ref: "Issue",
+    required: true
+  },
   userID: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true
   }
 })

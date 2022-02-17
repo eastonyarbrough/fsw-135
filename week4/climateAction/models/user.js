@@ -16,6 +16,10 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    profImg: {
+        type: String,
+        default: "https://www.oseyo.co.uk/wp-content/uploads/2020/05/empty-profile-picture-png-2.png"
+    },
     isAdmin: {
         type: Boolean,
         default: false

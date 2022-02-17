@@ -25,6 +25,7 @@ async function main() {
 app.use('/auth', require('./routes/authRouter.js'));
 app.use('/api', expressJwt({secret: process.env.SECRET, algorithms: ['HS256']}));
 app.use('/api/issues', require('./routes/issueRouter.js'));
+app.use('/api/comments', require('./routes/commentRouter.js'));
 
 //Error Handling
 app.use((err, req, res, next) => {

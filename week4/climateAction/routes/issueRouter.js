@@ -22,13 +22,30 @@ issueRouter
 
       if (issue.length === 0) {
         const error = new Error('Sorry, that post was not found');
-        next(error);
+        return next(error);
       }
       else if (issue.length !== 0) {
         res.status(200).send(issue);
       }
     })
   }) // GET one
+
+  .get("/search/user", (req, res, next) => {
+    Issue.find({userID: req.query.userID}, (err, issues) => {
+      if (err) {
+        res.status(500);
+        return next(err);
+      }
+
+      if (issues.length === 0) {
+        const error = new Error('This user does not have any posts');
+        return next(error);
+      }
+      else if (issues.length !== 0) {
+        res.status(200).send(issues)
+      }
+    })
+  }) // GET query user
 
   .post("/", (req, res, next) => {
     req.body.userID = req.user._id;
