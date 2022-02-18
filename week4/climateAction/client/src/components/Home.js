@@ -1,8 +1,10 @@
 import { useContext } from 'react';
-import { TokenContext } from '../App.js'
+import { TokenContext } from '../App.js';
+import { Link } from 'react-router-dom';
 
 export default function Home(props) {
     const token = useContext(TokenContext);
+
     if (!token) {
         return(
             <div>
@@ -17,6 +19,10 @@ export default function Home(props) {
                 return(
                     <div>
                         <h2>{e.title}</h2>
+                        <h3>{e.description}</h3>
+                        <button onClick={() => props.getComments(e._id, e.userID)}>
+                            <Link to="/comments" style={{textDecoration: 'none', color: 'black'}}>Comments</Link>
+                        </button>
                     </div>
                 );
             })

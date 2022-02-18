@@ -1,18 +1,25 @@
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { useEffect, useState, createContext } from 'react';
 import './App.css';
-import Home from './components/Home.js'
+import Home from './components/Home.js';
 import SignUp from './components/SignUp.js';
 import Login from './components/Login.js';
-import Profile from './components/Profile.js'
+import Profile from './components/Profile.js';
+import Comment from './components/Comments.js';
 
 export const TokenContext = createContext();
 
 function App() {
   const [token, setToken] = useState("");
+
   const [issues, setIssues] = useState([]);
+
   const [currentUser, setCurrentUser] = useState({});
   const [userIssues, setUserIssues] = useState([]);
+  
+  const [commentThread, setCommentThread] = useState([]);
+  const [commentOwnerIDs, setCommentOwnerIDs] = useState([]);
+
 
   useEffect(() => {
     if (token) {
@@ -94,6 +101,28 @@ function App() {
       .catch(err => console.log(err))
   }
 
+  const getComments = (id) => {
+    let tempArr = [];
+    
+    fetch(`api/comments/search/post?postID=${id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        setCommentThread(res);
+        res.map(e => {
+          tempArr.push(e.userID);
+        })
+        setCommentOwnerIDs(tempArr);
+      })
+      .catch(err => console.log(err))
+  }
+
   if (!token) {
     return (
       <BrowserRouter>
@@ -105,7 +134,7 @@ function App() {
               </nav>
               <main>
                 <Routes>
-                  <Route exact path="/" element={<Home issues = {issues}/>}></Route>
+                  <Route exact path="/" element={<Home/>}></Route>
                   <Route exact path="/signup" element={<SignUp userSignup = {userSignup}/>}></Route>
                   <Route exact path="/login" element={<Login userLogin = {userLogin}/>}></Route>
                 </Routes>
@@ -128,11 +157,18 @@ function App() {
               </nav>
               <main>
                 <Routes>
-                  <Route exact path="/" element={<Home issues = {issues}/>}></Route>
+                  <Route exact path="/" element={<Home
+                    issues = {issues}
+                    getComments = {getComments}
+                  />}></Route>
                   <Route exact path="/profile" element={<Profile
                     currentUser = {currentUser}
                     userPosts = {userPosts}
                     userIssues = {userIssues}
+                  />}></Route>
+                  <Route exact path="/comments" element={<Comment
+                    commentThread = {commentThread}
+                    commentOwnerIDs = {commentOwnerIDs}
                   />}></Route>
                 </Routes>
               </main>
