@@ -18,7 +18,7 @@ function App() {
   const [userIssues, setUserIssues] = useState([]);
   
   const [commentThread, setCommentThread] = useState([]);
-  const [commentOwnerIDs, setCommentOwnerIDs] = useState([]);
+  const [commentUserInfo, setCommentUserInfo] = useState([]);
 
 
   useEffect(() => {
@@ -116,9 +116,19 @@ function App() {
       .then(res => {
         setCommentThread(res);
         res.map(e => {
-          tempArr.push(e.userID);
+          fetch(`auth/search/user?_id=${e.userID}`, {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+            }
+          })
+            .then(result => result.json())
+            .then(result => tempArr.push(result))
+            .catch(error => console.log(error))
         })
-        setCommentOwnerIDs(tempArr);
+        setCommentUserInfo(tempArr);
       })
       .catch(err => console.log(err))
   }
@@ -168,7 +178,7 @@ function App() {
                   />}></Route>
                   <Route exact path="/comments" element={<Comment
                     commentThread = {commentThread}
-                    commentOwnerIDs = {commentOwnerIDs}
+                    commentUserInfo = {commentUserInfo}
                   />}></Route>
                 </Routes>
               </main>
