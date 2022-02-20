@@ -5,7 +5,7 @@ import Home from './components/Home.js';
 import SignUp from './components/SignUp.js';
 import Login from './components/Login.js';
 import Profile from './components/Profile.js';
-import Comment from './components/Comments.js';
+import OriginalPost from './components/OriginalPost.js';
 
 export const TokenContext = createContext();
 
@@ -17,9 +17,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [userIssues, setUserIssues] = useState([]);
   
+  const [originalPost, setOriginalPost] = useState({});
+  const [originalPoster, setOriginalPoster] = useState({});
   const [commentThread, setCommentThread] = useState([]);
-  const [commentUserInfo, setCommentUserInfo] = useState([]);
-
 
   useEffect(() => {
     if (token) {
@@ -102,8 +102,6 @@ function App() {
   }
 
   const getComments = (id) => {
-    let tempArr = [];
-    
     fetch(`api/comments/search/post?postID=${id}`, {
       method: 'GET',
       headers: {
@@ -113,23 +111,21 @@ function App() {
       }
     })
       .then(res => res.json())
-      .then(res => {
-        setCommentThread(res);
-        res.map(e => {
-          fetch(`auth/search/user?_id=${e.userID}`, {
-            method: 'GET',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-            }
-          })
-            .then(result => result.json())
-            .then(result => tempArr.push(result))
-            .catch(error => console.log(error))
-        })
-        setCommentUserInfo(tempArr);
-      })
+      .then(res => setCommentThread(res))
+      .catch(err => console.log(err))
+  }
+
+  const getOriginalPoster = (id) => {
+    fetch(`auth/search/user?_id=${id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => setOriginalPoster(res))
       .catch(err => console.log(err))
   }
 
@@ -170,15 +166,22 @@ function App() {
                   <Route exact path="/" element={<Home
                     issues = {issues}
                     getComments = {getComments}
+                    getOriginalPoster = {getOriginalPoster}
+                    originalPoster = {originalPoster}
+                    setOriginalPost = {setOriginalPost}
                   />}></Route>
                   <Route exact path="/profile" element={<Profile
                     currentUser = {currentUser}
                     userPosts = {userPosts}
                     userIssues = {userIssues}
+                    getComments = {getComments}
+                    getOriginalPoster = {getOriginalPoster}
+                    setOriginalPost = {setOriginalPost}
                   />}></Route>
-                  <Route exact path="/comments" element={<Comment
+                  <Route exact path="/comments" element={<OriginalPost
                     commentThread = {commentThread}
-                    commentUserInfo = {commentUserInfo}
+                    originalPoster = {originalPoster}
+                    originalPost = {originalPost}
                   />}></Route>
                 </Routes>
               </main>

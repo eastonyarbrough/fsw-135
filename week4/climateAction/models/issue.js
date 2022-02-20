@@ -22,6 +22,16 @@ const issueSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
+  },
+  userProfImg: {
+    type: String,
+    ref: "User",
+    required: true
+  },
+  userName: {
+    type: String,
+    ref: "User",
+    required: true
   }
 })
 

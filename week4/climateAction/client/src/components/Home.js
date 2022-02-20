@@ -18,11 +18,23 @@ export default function Home(props) {
             props.issues.map(e => {
                 return(
                     <div>
-                        <h2>{e.title}</h2>
-                        <h3>{e.description}</h3>
-                        <button onClick={() => props.getComments(e._id, e.userID)}>
-                            <Link to="/comments" style={{textDecoration: 'none', color: 'black'}}>Comments</Link>
-                        </button>
+                        <div>
+                            <img src={e.userProfImg} alt={`${e.userName}'s post`}></img>
+                            <h3>{e.userName}</h3>
+                        </div>
+                        <div>
+                            <h2>{e.title}</h2>
+                            <h3>{e.description}</h3>
+                        </div>
+                        <div>
+                            <button onClick={() => {
+                                props.getComments(e._id, e.userID)
+                                props.getOriginalPoster(e.userID)
+                                props.setOriginalPost({title: e.title, description: e.description})
+                            }}>
+                                <Link to="/comments" style={{textDecoration: 'none', color: 'black'}}>Comments</Link>
+                            </button>
+                        </div>
                     </div>
                 );
             })

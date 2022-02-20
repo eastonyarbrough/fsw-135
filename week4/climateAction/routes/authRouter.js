@@ -24,6 +24,16 @@ authRouter
         })
     }) //DEV TEST DELETE ONE
 
+    .get('/search/user', (req, res, next) => {
+        User.findOne({_id: req.query._id}, (err, user) => {
+            if (err) {
+                res.status(500);
+                return next(err);
+            }
+            res.status(200).send(user);
+        })
+    }) //GET query user
+
     .post('/signup', (req, res, next) => {
         User.findOne({userName: req.body.userName.toLowerCase()}, (err, user) => {
             if (err) {
