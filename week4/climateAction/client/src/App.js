@@ -129,6 +129,46 @@ function App() {
       .catch(err => console.log(err))
   }
 
+  const rerender = () => {
+    fetch('/api/issues', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => setIssues(res))
+      .catch(err => console.log(err))
+  }
+
+  const upvote = (id) => {
+    fetch(`api/issues/upvote/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(rerender())
+      .catch(err => console.log(err))
+  }
+
+  const downvote = (id) => {
+    fetch(`api/issues/downvote/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(rerender())
+      .catch(err => console.log(err))
+  }
+
   if (!token) {
     return (
       <BrowserRouter>
@@ -169,6 +209,8 @@ function App() {
                     getOriginalPoster = {getOriginalPoster}
                     originalPoster = {originalPoster}
                     setOriginalPost = {setOriginalPost}
+                    upvote = {upvote}
+                    downvote = {downvote}
                   />}></Route>
                   <Route exact path="/profile" element={<Profile
                     currentUser = {currentUser}

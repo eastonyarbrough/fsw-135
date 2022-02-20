@@ -35,6 +35,12 @@ export default function Home(props) {
                                 <Link to="/comments" style={{textDecoration: 'none', color: 'black'}}>Comments</Link>
                             </button>
                         </div>
+                        <div>
+                            <button onClick={() => props.upvote(e._id)}>Like</button>
+                            <h4>{e.upVotes}</h4>
+                            <button onClick={() => props.downvote(e._id)}>Dislike</button>
+                            <h4>{e.downVotes}</h4>
+                        </div>
                     </div>
                 );
             })

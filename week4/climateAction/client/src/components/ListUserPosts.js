@@ -26,6 +26,10 @@ export default function ListUserPosts(props) {
                                 <Link to="/comments" style={{textDecoration: 'none', color: 'black'}}>Comments</Link>
                             </button>
                         </div>
+                        <div>
+                            <h4>{`Likes: ${e.upVotes}`}</h4>
+                            <h4>{`Dislikes: ${e.downVotes}`}</h4>
+                        </div>
                     </div>
                 );
             })
