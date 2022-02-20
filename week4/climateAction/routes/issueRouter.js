@@ -89,4 +89,32 @@ issueRouter
     )
   }) // PUT one
 
+  .put("/upvote/:issueID", (req, res, next) => {
+    Issue.findOneAndUpdate(
+      { _id: req.params.issueID },
+      {$inc: {upVotes: 1}},
+      (err, updatedIssue) => {
+        if (err) {
+          res.status(500);
+          return next(err);
+        }
+        res.status(201).send(updatedIssue);
+      }
+    )
+  }) // PUT upVote
+
+  .put("/downvote/:issueID", (req, res, next) => {
+    Issue.findOneAndUpdate(
+      { _id: req.params.issueID },
+      {$inc: {downVotes: 1}},
+      (err, updatedIssue) => {
+        if (err) {
+          res.status(500);
+          return next(err);
+        }
+        res.status(201).send(updatedIssue);
+      }
+    )
+  }) // PUT downVote
+
 module.exports = issueRouter;
