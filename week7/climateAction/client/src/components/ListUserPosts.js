@@ -7,7 +7,11 @@ export default function ListUserPosts(props) {
     if (props.userIssues.errMsg) {
         return(
             <div>
-                <h2>You have not made a post yet.</h2>
+                <div className="styleCont">
+                    <div className="introCont">
+                        <h2>You have not made a post yet.</h2>
+                    </div>
+                </div>
             </div>
         );
     }

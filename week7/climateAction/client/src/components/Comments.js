@@ -2,7 +2,11 @@ export default function Comments(props) {
     if (props.commentThread.errMsg) {
         return(
             <div id="noComments">
-                <h2>This post has no comments yet.</h2>
+                <div className="styleCont">
+                    <div className="introCont">
+                    <h2>This post has no comments yet.</h2>
+                    </div>
+                </div>
             </div>
         );
     }
