@@ -1,0 +1,229 @@
+* {margin: 0 ; padding: 0}
+
+body {
+    background: url('https://images.squarespace-cdn.com/content/v1/56ccd2364d088e8803ee067e/1529709673882-9GBT377P453C3KVHFIIL/Natural-Environment-Sector-landscape-image-Sustainability-Defined?format=1000w') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+nav {
+    background: url('./images/navBkg.png');
+    height: 60px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.navAnchor {
+    padding: 20px;
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+.navAnchor:hover {
+    transform: translateY(-4px);
+    text-decoration: underline;
+    transition: 0.4s ease-out;
+}
+
+#flexIntro {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 75vh;
+}
+
+.introCont {
+    text-align: center;
+    padding: 40px;
+}
+
+#signUpCont {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.centTxt {
+    text-align: center;
+}
+
+#signUpAssetCont {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUpAsset {
+    margin: 10px;
+}
+
+#loginCont {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginAssetCont {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginAsset {
+    margin: 10px;
+}
+
+#thanksMsg {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 75vh;
+}
+
+#flexPostCont {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#postTitle {
+    margin: 15px;
+}
+
+#postSubmit {
+    margin: 10px;
+}
+
+.postCont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.userCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.thisUserInfo {
+    padding: 30px;
+    text-align: center;
+}
+
+.thisUserPost {
+    padding: 30px;
+    width: 20vw;
+    height: auto;
+}
+
+.userImg {
+    border-radius: 50%;
+    width: 140px;
+    height: auto;
+    box-shadow: 5px 5px 8px;
+}
+
+.userPostTitle {
+    text-decoration: underline;
+    padding-bottom: 10px;
+}
+
+.postFeatures {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12vw;
+    height: auto;
+}
+
+.featAsset {
+    margin: 10px;
+}
+
+#curUserProf {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.userProfImg {
+    border-radius: 50%;
+    box-shadow: 5px 5px 8px;
+    width: 192px;
+    height: auto;
+}
+
+#usersPostsCont {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.indPostCont {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.usersPostInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20vw;
+    height: auto;
+    text-align: center;
+}
+
+#ogPostCont {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#noComments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.styleCont {
+    background: url('./images/postBkg.png');
+    border-radius: 10px;
+    width: 40vw;
+    height: auto;
+    margin: 20px;
+}
+
+.centerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
